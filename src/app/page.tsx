@@ -49,7 +49,7 @@ export default function Home() {
           <p>给一个中文词汇，就生成一张精美的卡片，并且略带讽刺精美的解读。</p>
           <Input
             className="w-full text-xl h-16"
-            placeholder="给一个中文词汇"
+            placeholder="说吧, 他们又用哪个词来忽悠你了?"
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
