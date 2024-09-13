@@ -1,7 +1,9 @@
 "use client";
 import SvgRenderer from "@/components/card";
+import GenerateHistory from "@/components/history";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { addHistory } from "@/lib/storage";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -11,6 +13,7 @@ const api = "api";
 export default function Home() {
   const [inputValue, setInputValue] = useState("");
   const [svgContent, setSvgContent] = useState("");
+
   const genrateSvg = async (input: string) => {
     const Promise = fetch(api, {
       method: "POST",
@@ -25,7 +28,8 @@ export default function Home() {
       success: async (data) => {
         const output = await data.text();
         setSvgContent(output);
-        console.log(output);
+        // console.log(output);
+        addHistory(input, output);
         return `${input} 生成成功`;
       },
       error: (error) => {
@@ -42,8 +46,8 @@ export default function Home() {
     }
   };
   return (
-    <div className="m-4 mx-8 md:mx-20">
-      <div className=" gap-8 m-auto grid md:grid-cols-5">
+    <div className="p-4 px-8 md:mx-20">
+      <div className="gap-8 grid md:grid-cols-5">
         <div className="*:mt-4 md:col-span-3">
           <h1 className="text-7xl font-serif">汉语新解</h1>
           <p>给一个中文词汇，就生成一张精美的卡片，并且略带讽刺精美的解读。</p>
@@ -85,10 +89,16 @@ export default function Home() {
               生成 ↗
             </Button>
           </div>
+          <div className="hidden md:block">
+            <GenerateHistory key={svgContent} />
+          </div>
         </div>
-        <div className="max-h-screen md:col-span-2">
+        <div className="md:col-span-2 overflow-visible">
           <SvgRenderer svgContent={svgContent}></SvgRenderer>
         </div>
+      </div>
+      <div className="block md:hidden">
+        <GenerateHistory key={svgContent} />
       </div>
     </div>
   );

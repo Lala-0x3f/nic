@@ -2,13 +2,18 @@ import React, { useRef, useState } from "react";
 import { Button } from "./ui/button"; // 假设你已经安装了shadcn/ui库
 import html2canvas from "html2canvas"; // 用于截图的库
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 const fallbackImage = "/images/fallback.png"; // 你的fallback图片路径
 
 interface SvgRendererProps {
+  minimized?: boolean;
   svgContent?: string; // 可选的SVG内容
 }
 
-const SvgRenderer: React.FC<SvgRendererProps> = ({ svgContent }) => {
+const SvgRenderer: React.FC<SvgRendererProps> = ({
+  svgContent,
+  minimized = false,
+}) => {
   const svgContainerRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
@@ -47,33 +52,30 @@ const SvgRenderer: React.FC<SvgRendererProps> = ({ svgContent }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <div>
-        {svgContent ? (
-          <div className="flex flex-col items-center justify-center w-full h-full max-w-lg max-h-96 ">
-            <div
-              ref={svgContainerRef}
-              dangerouslySetInnerHTML={{ __html: svgContent.replaceAll(/```|```svg/g,"") }}
-              className="max-w-full max-h-full"
-            />
-            <div className="grid grid-cols-2 gap-2 my-4">
-              <Button onClick={handleCopyImage}>复制图片</Button>
-              <Button
-                onClick={handleDownload}
-                disabled={isDownloading}
-              >
-                {isDownloading ? "正在下载..." : "下载图片"}
-              </Button>
-            </div>
-          </div>
-        ) : (
-          <img
-            src={fallbackImage}
-            alt="Fallback"
-            className="max-w-full max-h-full"
+    <div className="relative flex flex-col items-center justify-center h-screen">
+      {svgContent ? (
+        <div className="flex flex-col items-center justify-center w-full h-full max-w-lg max-h-96 ">
+          <div
+            ref={svgContainerRef}
+            dangerouslySetInnerHTML={{
+              __html: svgContent.replaceAll(/```|```svg/g, ""),
+            }}
+            className="max-w-full "
           />
-        )}
-      </div>
+          <div className={cn(minimized?"hidden":"grid grid-cols-2 gap-2 my-4")}>
+            <Button onClick={handleCopyImage}>复制图片</Button>
+            <Button onClick={handleDownload} disabled={isDownloading}>
+              {isDownloading ? "正在下载..." : "下载图片"}
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <img
+          src={fallbackImage}
+          alt="Fallback"
+          className="max-w-full max-h-full"
+        />
+      )}
     </div>
   );
 };
