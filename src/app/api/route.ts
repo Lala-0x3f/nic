@@ -2,7 +2,7 @@ import OpenAI from "openai";
 import { envVariables } from "@/lib/getenv";
 
 export const POST = async (request: Request) => {
-  const userContent = await request.text();
+  const userContent = await request.json();
   const system_prompt = `
 ;; 用途: 将一个汉语词汇进行全新角度的解释
 
@@ -35,7 +35,8 @@ export const POST = async (request: Request) => {
 //    <circle cx="55" cy="25" r="15" />
 //    <circle cx="70" cy="25" r="15" />
 //</g>
-//可以使用 <animate> ，ellipse，g，polygon，defs，emoji
+//可以使用  text，ellipse，g，polygon，defs，emoji
+//可以在小装饰元素上使用 <animate>
 .then(排列 (
   {连续分布成树，曲线，扇形
   (随机几何图)}
@@ -96,8 +97,9 @@ export const POST = async (request: Request) => {
       model: api.model,
       messages: [
         { role: "system", content: system_prompt },
-        { role: "user", content: userContent },
+        { role: "user", content: userContent.text },
       ],
+      temperature: userContent.temperature || 0.7,
     });
 
     return new Response(
@@ -132,7 +134,7 @@ export const POST = async (request: Request) => {
 export const GET = async () => {
   let text
   if (envVariables.API_KEY && envVariables.API_URL){
-     text = "API_KEY and API_URL are set";
+     text = envVariables.MODEL;
   }else{
      text = "API_KEY or API_URL is not set";
   }

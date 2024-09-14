@@ -1,6 +1,7 @@
 "use client";
 import SvgRenderer from "@/components/card";
 import GenerateHistory from "@/components/history";
+import ModelConf from "@/components/modelconf";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { addHistory } from "@/lib/storage";
@@ -13,6 +14,7 @@ const api = "api";
 export default function Home() {
   const [inputValue, setInputValue] = useState("");
   const [svgContent, setSvgContent] = useState("");
+  const [temperature, setTemperature] = useState(0.7);
 
   const genrateSvg = async (input: string) => {
     const Promise = fetch(api, {
@@ -20,7 +22,7 @@ export default function Home() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: input,
+      body: JSON.stringify({ text: input, temperature: temperature }),
     });
 
     toast.promise(Promise, {
@@ -51,6 +53,7 @@ export default function Home() {
         <div className="*:mt-4 md:col-span-3">
           <h1 className="text-7xl font-serif">汉语新解</h1>
           <p>给一个中文词汇，就生成一张精美的卡片，并且略带讽刺精美的解读。</p>
+          <ModelConf onValueChange={(v)=>{setTemperature(v)}} t={temperature} />
           <Input
             className="w-full text-xl h-16"
             placeholder="说吧, 他们又用哪个词来忽悠你了?"
