@@ -21,25 +21,55 @@ export const POST = async (request: Request) => {
 (few-shots (委婉 . "刺向他人时, 决定在剑刃上撒上止痛药。"))
 (SVG-Card 解释)))
 
+(defun 随机几何图形(design-rule,color) -> SVG element
+(装饰图案 生成随机几何图)
+// 例子：
+// 星形
+//<polygon points="50 160 55 180 70 180 60 190 65 205 50 195 35 205 40 190 30 180 45 180" stroke="green" fill="transparent" stroke-width="5"/>
+//波浪线
+//<path d="M20,230 Q40,205 50,230 T90,230" fill="none" stroke="blue" stroke-width="5"/>
+//连续圆形
+//<g stroke="green" fill="white" stroke-width="5">
+//    <circle cx="25" cy="25" r="15" />
+//    <circle cx="40" cy="25" r="15" />
+//    <circle cx="55" cy="25" r="15" />
+//    <circle cx="70" cy="25" r="15" />
+//</g>
+//可以使用 <animate> ，ellipse，g，polygon，defs，emoji
+.then(排列 (
+  {连续分布成树，曲线，扇形
+  (随机几何图)}
+  rounded-corners ({尖锐批评?锐利:圆角} 随机)
+)))
+
 (defun SVG-Card (解释)
 "输出SVG 卡片"
-(setq design-rule "合理使用负空间，整体排版要有呼吸感"
-design-principles '(干净 简洁 典雅))
+
+
 
 (设置画布 '(宽度 400 高度 600 边距 20))
 (标题字体 '毛笔楷体)
 (自动缩放 '(最小字号 16))
+()
 
-(配色风格 '((背景色 (蒙德里安风格 设计感)))
+(setq design-rule "合理使用负空间，整体排版要有呼吸感"
+(配色风格 (
+(蒙德里安，康定斯基风格 设计感)
+))
+)
+
 (主要文字 (汇文明朝体 粉笔灰))
-(装饰图案 随机几何图))
+
+
 
 (卡片元素 ((居中标题 "汉语新解")
 分隔线
 (排版输出 用户输入 英文 日语)
 解释
-(线条图 (批判内核 解释))
+(线条图 (批判内核 解释) **graphic**)
 (极简总结 线条图))))
+装饰图案
+(随机几何图形)
 
 (defun start ()
 "启动时运行"
